@@ -19,7 +19,7 @@
         <h3>竞价排名</h3>
         <form>
             <div class="form-row">
-                <div class="col-auto">
+                <div class="col-auto mb-2">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <div class="input-group-text">推广文案</div>
@@ -27,7 +27,7 @@
                         <input type="text" class="form-control" id="ethTalksName" placeholder="最大的同性社交网站">
                     </div>
                 </div>
-                <div class="col-auto">
+                <div class="col-auto mb-2">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <div class="input-group-text">推广链接</div>
@@ -35,7 +35,7 @@
                         <input type="text" class="form-control" id="ethTalksLink" placeholder="https://github.com">
                     </div>
                 </div>
-                <div class="col-auto">
+                <div class="col-auto mb-2">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <div class="input-group-text">出价</div>
@@ -46,11 +46,26 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-primary">确定</button>
+                <div class="col-auto mb-2">
+                    <button type="submit" class="btn btn-primary" id="bidButton">确定</button>
                 </div>
             </div>
         </form>
+
+        <div class="container mt-4">
+            
+            <div class="row justify-content-center">
+                <h3>排行榜</h3>
+            </div>
+
+            <div class="row text-center font-weight-bold">
+                <div class="col-2">#</div>
+                <div class="col">文案</div>
+                <div class="col">出价</div>
+            </div>
+
+            <div class="container" id="rankList"></div>
+        </div>
     </div>
     
 

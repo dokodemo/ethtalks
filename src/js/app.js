@@ -10,14 +10,38 @@ App = {
         if (typeof web3 !== "undefined") {
             App.web3Provider = web3.currentProvider;
         } else {
-            App.web3Provider = new Web3.providers.HttpProvider("https://mainnet.infura.io/HcyKnfsZ0pvLCWg1URtv");
+            //App.web3Provider = new Web3.providers.HttpProvider("https://mainnet.infura.io/HcyKnfsZ0pvLCWg1URtv");
+            App.web3Provider = new Web3.providers.HttpProvider("http://127.0.0.1:9545");
         }
         web3 = new Web3(App.web3Provider);
       
-        return App.test();
+        return App.initContract();
     },
 
-    test: function() {
+    initContract: function() {
+        $.getJSON('ETHtalks.json', function(data) {
+            console.log(data.abi);
+            var address = "0x345ca3e014aaf5dca488057592ee47305d9b3e10";
+            var ethTalks = new web3.eth.Contract(data.abi, address);
+            App.contracts.ETHtalks = ethTalks;
+
+            App.contracts.ETHtalks.events.BidEvent({}, function(error, event) {
+                console.log(event);
+            }).on('data', function(event) {
+                console.log(event);
+            }).on('changed', function(event){
+                console.log(event);
+            }).on('error', console.error);
+
+            return App.test2();
+        });
+    },
+
+    test2: function() {
+        
+    },
+
+    test1: function() {
         web3.eth.getAccounts().then(function(accounts) {
             if (accounts.length == 0) {
                 accounts[0] = "0x2069fcf4b950039a6af59d551b9a3abe81a8a629";
@@ -33,6 +57,22 @@ App = {
                 console.log(balance.toFixed(3));
             });
         });
+
+        var text = "";
+        var i;
+        for (i = 0; i < 20; i++) {
+            text += `
+            <hr class="my-4">
+            <div class="row text-center" style="font-size: ` + (2 - i * 0.1).toFixed(2) +`rem;">
+                <div class="col-2">` + (i + 1) + `</div>
+                <div class="col"><a href="https://github.com">全球最大的同性社交网站</a></div>
+                <div class="col">0.101 ETH</div>
+            </div>
+            `;
+        }
+
+        text += `<hr class="my-4">`;
+        $("#rankList").html(text);
     }
 }
 
@@ -50,22 +90,17 @@ $(function() {
         });
 
         $("#bidButton").click(function(event) {
-            var text = "";
-            var i;
-            for (i = 0; i < 20; i++) {
-                text += `
-                <hr class="my-4">
-                <div class="row text-center" style="font-size: ` + (2 - i * 0.1).toFixed(2) +`rem;">
-                    <div class="col-2">` + (i + 1) + `</div>
-                    <div class="col"><a href="https://github.com">全球最大的同性社交网站</a></div>
-                    <div class="col">0.101 ETH</div>
-                </div>
-                `;
-            }
-
-            text += `<hr class="my-4">`;
-            $("#rankList").html(text);
             event.preventDefault();
+            var name = $("#ethTalksName").val();
+            var link = $("#ethTalksLink").val();
+            var value = $("#ethTalksValue").val();
+
+            var account = "0x627306090abaB3A6e1400e9345bC60c78a8BEf57";
+            App.contracts.ETHtalks.methods.bid(name, link).send({from: account, value: web3.utils.toWei(value, "ether")}).then(function(receipt) {
+                console.log(receipt);
+            }).catch(function(error) {
+                console.log(error);
+            });
         });
     });
 });

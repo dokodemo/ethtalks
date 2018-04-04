@@ -20,25 +20,33 @@ App = {
 
     initContract: function() {
         $.getJSON('ETHtalks.json', function(data) {
-            console.log(data.abi);
-            var address = "0x345ca3e014aaf5dca488057592ee47305d9b3e10";
+            console.log(data);
+            var address = data.networks[4447].address;
             var ethTalks = new web3.eth.Contract(data.abi, address);
             App.contracts.ETHtalks = ethTalks;
 
-            App.contracts.ETHtalks.events.BidEvent({}, function(error, event) {
-                console.log(event);
-            }).on('data', function(event) {
-                console.log(event);
-            }).on('changed', function(event){
-                console.log(event);
-            }).on('error', console.error);
+            // App.contracts.ETHtalks.events.BidEvent({}, function(error, event) {
+            //     console.log(event);
+            // }).on('data', function(event) {
+            //     console.log(event);
+            // }).on('changed', function(event){
+            //     console.log(event);
+            // }).on('error', console.error);
 
             return App.test2();
         });
     },
 
     test2: function() {
-        
+        App.contracts.ETHtalks.methods.getBalance().call().then(function(balance) {
+            balance = parseInt(balance) / Math.pow(10, 18);
+            console.log(balance.toFixed(3));
+        });
+
+        App.contracts.ETHtalks.methods.getTop(5).call().then(function(count) {
+            console.log(count);
+
+        })
     },
 
     test1: function() {
@@ -95,11 +103,13 @@ $(function() {
             var link = $("#ethTalksLink").val();
             var value = $("#ethTalksValue").val();
 
-            var account = "0x627306090abaB3A6e1400e9345bC60c78a8BEf57";
-            App.contracts.ETHtalks.methods.bid(name, link).send({from: account, value: web3.utils.toWei(value, "ether")}).then(function(receipt) {
-                console.log(receipt);
-            }).catch(function(error) {
-                console.log(error);
+            web3.eth.getAccounts().then(function(accounts) {
+                var account = accounts[0];//"0x627306090abaB3A6e1400e9345bC60c78a8BEf57";
+                App.contracts.ETHtalks.methods.bid(name, link).send({from: account, value: web3.utils.toWei(value, "ether")}).then(function(receipt) {
+                    console.log(receipt);
+                }).catch(function(error) {
+                    console.log(error);
+                });
             });
         });
     });

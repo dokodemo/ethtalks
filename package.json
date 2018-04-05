@@ -20,5 +20,8 @@
   "homepage": "https://github.com/Dokodemo/ethtalks#readme",
   "devDependencies": {
     "lite-server": "^2.3.0"
+  },
+  "dependencies": {
+    "zeppelin-solidity": "^1.8.0"
   }
 }

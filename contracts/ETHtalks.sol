@@ -1,6 +1,8 @@
 pragma solidity ^0.4.2;
 
 contract ETHtalks {    
+    address public owner;
+
     struct Record {
         string name;
         string link;
@@ -9,9 +11,25 @@ contract ETHtalks {
 
     Record[] public records;
 
+    event NewRecord(string name, string link, uint value);
+
+    function ETHtalks() public {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner);
+        _;
+    }
+
+    function withdraw() external onlyOwner {
+        owner.transfer(address(this).balance);
+    }
+
     function bid(string _name, string _link) public payable {
         require(msg.value >= 0.001 ether);
         records.push(Record(_name, _link, msg.value));
+        emit NewRecord(_name, _link, msg.value);
     }
 
     function contains(int[] array, int value) internal pure returns(bool) {

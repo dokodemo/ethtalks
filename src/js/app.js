@@ -19,22 +19,96 @@ App = {
     },
 
     initContract: function() {
-        $.getJSON('ETHtalks.json', function(data) {
+        var address = "0x23029909859cd1f0fdab532b2ef7522cbab1a6c9";
+        var abi = [{"constant":false,"inputs":[{"name":"_name","type":"string"},{"name":"_link","type":"string"}],"name":"bid","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"name","type":"string"},{"indexed":false,"name":"link","type":"string"},{"indexed":false,"name":"value","type":"uint256"}],"name":"NewRecord","type":"event"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"constant":false,"inputs":[],"name":"withdraw","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"top","type":"uint256"}],"name":"getTop","outputs":[{"name":"","type":"int256[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"records","outputs":[{"name":"name","type":"string"},{"name":"link","type":"string"},{"name":"value","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}];
+        var ethTalks = new web3.eth.Contract(abi, address);
+        console.log(ethTalks);
+        App.contracts.ETHtalks = ethTalks;
+
+        var web3Infura = new Web3(new Web3.providers.WebsocketProvider("wss://ropsten.infura.io/ws"));
+        App.contracts.etEvents = new web3Infura.eth.Contract(abi, address);
+
+        App.contracts.etEvents.events.NewRecord({}, function(error, event) {
+            console.log(error);
+            console.log(event);
+        }).on("data", function(event) {
+            console.log(event);
+        }).on("changed", function(event){
+            console.log(event);
+        }).on("error", console.error);
+
+        return App.fetchList();
+        /*
+        $.getJSON("ETHtalks.json", function(data) {
             console.log(data);
             var address = data.networks[4447].address;
             var ethTalks = new web3.eth.Contract(data.abi, address);
+            console.log(ethTalks);
             App.contracts.ETHtalks = ethTalks;
 
-            // App.contracts.ETHtalks.events.BidEvent({}, function(error, event) {
-            //     console.log(event);
-            // }).on('data', function(event) {
-            //     console.log(event);
-            // }).on('changed', function(event){
-            //     console.log(event);
-            // }).on('error', console.error);
+            App.contracts.ETHtalks.events.NewRecord({}, function(error, event) {
+                console.log(error);
+                console.log(event);
+            }).on("data", function(event) {
+                console.log(event);
+            }).on("changed", function(event){
+                console.log(event);
+            }).on("error", console.error);
 
-            return App.test2();
+            return App.fetchList();
         });
+        */
+    },
+
+    fetchList: function() {
+        App.contracts.ETHtalks.methods.getTop(5).call().then(function(ids) {
+            var validIds = ids.filter(function(id) {
+                return id >= 0;
+            });
+            console.log(validIds);
+            $("#rankList").empty();
+
+            var html = "";
+            let index = 0;
+            
+            validIds.reduce(function (promise, id) {
+                return promise.then(function() {
+                    return App.contracts.ETHtalks.methods.records(id).call()
+                }).then(function(record) {
+                    console.log(record);
+                    html += `
+                        <hr class="my-4">
+                        <div class="row text-center" style="font-size: ${(2 - index * 0.1).toFixed(2)}rem;">
+                            <div class="col-2">${(index + 1)}</div>
+                            <div class="col"><a href="${record[1]}" target="_blank">${record[0]}</a></div>
+                            <div class="col">${web3.utils.fromWei(record[2], 'ether')} ETH</div>
+                        </div>
+                    `;
+                    index++;
+                });
+            }, Promise.resolve()).then(function() {
+                $("#rankList").html(html);
+            }).catch(function(error) {
+                console.log(error);
+            });
+            /*
+            
+            for (id of ids) {
+                console.log(id);
+                App.contracts.ETHtalks.methods.records(id).call().then(function(record) {
+                    console.log(record);
+                    $("#rankList").append(`
+                        <hr class="my-4">
+                        <div class="row text-center" style="font-size: ${2}rem;">
+                            <div class="col-2">${(1)}</div>
+                            <div class="col"><a href="${record[1]}">${record[0]}</a></div>
+                            <div class="col">0.101 ETH</div>
+                        </div>
+                    `);
+                });
+            }
+            */
+        })
     },
 
     test2: function() {
@@ -42,11 +116,6 @@ App = {
             balance = parseInt(balance) / Math.pow(10, 18);
             console.log(balance.toFixed(3));
         });
-
-        App.contracts.ETHtalks.methods.getTop(5).call().then(function(count) {
-            console.log(count);
-
-        })
     },
 
     test1: function() {
@@ -103,13 +172,30 @@ $(function() {
             var link = $("#ethTalksLink").val();
             var value = $("#ethTalksValue").val();
 
+            var isDone = false;
             web3.eth.getAccounts().then(function(accounts) {
                 var account = accounts[0];//"0x627306090abaB3A6e1400e9345bC60c78a8BEf57";
-                App.contracts.ETHtalks.methods.bid(name, link).send({from: account, value: web3.utils.toWei(value, "ether")}).then(function(receipt) {
+                App.contracts.ETHtalks.methods.bid(name, link).send({from: account, value: web3.utils.toWei(value, "ether")})
+                .then(function(receipt) {
                     console.log(receipt);
-                }).catch(function(error) {
-                    console.log(error);
-                });
+                    App.fetchList();
+                })
+                /*
+                .on("transactionHash", function(hash){
+                    console.log(hash);
+                })
+                .on("confirmation", function(confirmationNumber, receipt) {
+                    console.log(confirmationNumber);
+                    if (!isDone && confirmationNumber > 10) {
+                        isDone = true;
+                        App.fetchList();
+                    }
+                }) 
+                .on("receipt", function(receipt) {
+                    console.log(receipt);
+                })
+                .on("error", console.error);
+                */
             });
         });
     });

@@ -35,19 +35,14 @@ contract Ranking {
     }
 
     function updateRecordName(uint _id, string _name) external onlyOwner  {
+        require(_utfStringLength(_name) <= 20);
         records[_id].name = _name;
-    }
-
-    function getBalance() external onlyOwner view returns (uint) {
-        return address(this).balance;
-    }
-
-    function getRecordCount() external view returns (uint) {
-        return records.length;
     }
 
     function createRecord (string _name, string _link) external payable {
         require(msg.value >= 0.0001 ether);
+        require(_utfStringLength(_name) <= 20);
+        require(_utfStringLength(_link) <= 50);
         uint id = records.push(Record(msg.value, _name, _link)) - 1;
         // recordToOwner[id] = msg.sender;
         CreateEvent(id, msg.value, _name, _link);
@@ -66,5 +61,37 @@ contract Ranking {
             result[i][1] = records[i].bid;
         }
         return result;
+    }
+
+    function getBalance() external onlyOwner view returns (uint) {
+        return address(this).balance;
+    }
+
+    function getRecordCount() external view returns (uint) {
+        return records.length;
+    }
+
+    function _utfStringLength(string str) private pure returns (uint length) {
+        uint i = 0;
+        uint l = 0;
+        bytes memory string_rep = bytes(str);
+
+        while (i<string_rep.length) {
+            if (string_rep[i]>>7==0)
+                i += 1;
+            else if (string_rep[i]>>5==0x6)
+                i += 2;
+            else if (string_rep[i]>>4==0xE)
+                i += 3;
+            else if (string_rep[i]>>3==0x1E)
+                i += 4;
+            else
+                //For safety
+                i += 1;
+
+            l++;
+        }
+
+        return l;
     }
 }

@@ -1,21 +1,20 @@
 const Ranking = artifacts.require("./Ranking.sol");
 
 contract('Ranking', async (accounts) => {
-    it("testGetBalance", async () => {
-        let instance = await Ranking.deployed();
-        let balance = await instance.getBalance();
-        // console.log(balance);
-    });
+    const totalCount = 20;
+    let totalBalance = 0;
 
     it("testCreateRecord", async () => {
-        const count = 20;
-
         let instance = await Ranking.deployed();
 
-        for (let i = 0; i < count; i++) {
+        for (let i = 0; i < totalCount; i++) {
+            let rand = Math.floor(Math.random() * totalCount);
+
             let bid = web3.toWei(Math.random(), "ether");
-            let name = "Baidu" + Math.random();
-            let link = "https://baidu.com" + Math.random();
+            let name = "Baidu" + rand;
+            let link = "https://baidu.com" + rand;
+
+            totalBalance = web3.toBigNumber(bid).add(totalBalance);
 
             let result = await instance.createRecord(name, link, { value: bid });
             // console.log(result);
@@ -28,16 +27,31 @@ contract('Ranking', async (accounts) => {
         }
     });
 
-    it("testSupportRecord", async () => {
-        let index = 0;
-        let bid = web3.toWei(Math.random(), "ether");
+    it("testUpdateRecordName", async () => {
+        let id = Math.floor(Math.random() * totalCount);;
+        let name = "New Name" + id;
 
         let instance = await Ranking.deployed();
-        let oldRecord = await instance.records(index);
-        // console.log(oldRecord);
-        let result = await instance.supportRecord(index, { value: bid });
+        let result = await instance.updateRecordName(id, name, { from: accounts[0] });
         // console.log(result);
-        let newRecord = await instance.records(index);
+        let record = await instance.records(id);
+        // console.log(record);
+
+        assert.equal(record[1], name);
+    });
+
+    it("testSupportRecord", async () => {
+        let id = Math.floor(Math.random() * totalCount);
+        let bid = web3.toWei(Math.random(), "ether");
+
+        totalBalance = web3.toBigNumber(bid).add(totalBalance);
+
+        let instance = await Ranking.deployed();
+        let oldRecord = await instance.records(id);
+        // console.log(oldRecord);
+        let result = await instance.supportRecord(id, { value: bid });
+        // console.log(result);
+        let newRecord = await instance.records(id);
         // console.log(newRecord);
 
         assert.equal(newRecord[0].sub(oldRecord[0]).toNumber(), bid);
@@ -50,5 +64,33 @@ contract('Ranking', async (accounts) => {
         // for (let i = 0; i < result.length; i++) {
         //     console.log(result[i][0].toNumber() + " : " + result[i][1].toNumber());
         // }
+
+        assert.equal(result.length, totalCount);
+    });
+
+    it("testGetBalance", async () => {
+        let instance = await Ranking.deployed();
+        let balance = await instance.getBalance();
+        // console.log(balance);
+
+        assert.equal(balance.toNumber (), totalBalance);
+    });
+
+    it("testWithdraw", async () => {
+        let instance = await Ranking.deployed();
+        let result = await instance.withdraw({ from: accounts[0] });
+        // console.log(result);
+        let balance = await instance.getBalance();
+        // console.log(balance);
+
+        assert.equal(balance.toNumber(), 0);
+    });
+
+    it("testGetRecordCount", async () => {
+        let instance = await Ranking.deployed();
+        let count = await instance.getRecordCount();
+        // console.log(recordCount);
+
+        assert.equal(count.toNumber(), totalCount);
     });
 });

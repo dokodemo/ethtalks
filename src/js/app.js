@@ -36,27 +36,7 @@ App = {
             console.log(event);
         }).on("error", console.error);
 
-        return App.fetchList();
-        /*
-        $.getJSON("ETHtalks.json", function(data) {
-            console.log(data);
-            var address = data.networks[4447].address;
-            var ethTalks = new web3.eth.Contract(data.abi, address);
-            console.log(ethTalks);
-            App.contracts.ETHtalks = ethTalks;
-
-            App.contracts.ETHtalks.events.NewRecord({}, function(error, event) {
-                console.log(error);
-                console.log(event);
-            }).on("data", function(event) {
-                console.log(event);
-            }).on("changed", function(event){
-                console.log(event);
-            }).on("error", console.error);
-
-            return App.fetchList();
-        });
-        */
+        //return App.fetchList();
     },
 
     fetchList: function() {

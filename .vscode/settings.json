@@ -1,0 +1,4 @@
+{
+    // Compile using a remote version instead of the current one, for example: 'latest' or 'v0.4.3+commit.2353da71'
+    "solidity.compileUsingRemoteVersion": "v0.4.19+commit.c4cbbb05"
+}

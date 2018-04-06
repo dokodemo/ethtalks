@@ -64,8 +64,4 @@ contract ETHtalks {
 
         return ret;
     }
-
-    function getBalance() public view returns (uint) {
-        return address(this).balance;
-    }
 }

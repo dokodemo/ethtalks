@@ -22,7 +22,6 @@ App = {
         var address = "0x23029909859cd1f0fdab532b2ef7522cbab1a6c9";
         var abi = [{"constant":false,"inputs":[{"name":"_name","type":"string"},{"name":"_link","type":"string"}],"name":"bid","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"name","type":"string"},{"indexed":false,"name":"link","type":"string"},{"indexed":false,"name":"value","type":"uint256"}],"name":"NewRecord","type":"event"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"constant":false,"inputs":[],"name":"withdraw","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"top","type":"uint256"}],"name":"getTop","outputs":[{"name":"","type":"int256[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"records","outputs":[{"name":"name","type":"string"},{"name":"link","type":"string"},{"name":"value","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}];
         var ethTalks = new web3.eth.Contract(abi, address);
-        console.log(ethTalks);
         App.contracts.ETHtalks = ethTalks;
 
         var web3Infura = new Web3(new Web3.providers.WebsocketProvider("wss://ropsten.infura.io/ws"));
@@ -65,7 +64,6 @@ App = {
             var validIds = ids.filter(function(id) {
                 return id >= 0;
             });
-            console.log(validIds);
             $("#rankList").empty();
 
             var html = "";
@@ -73,6 +71,7 @@ App = {
             
             validIds.reduce(function (promise, id) {
                 return promise.then(function() {
+                    console.log(id);
                     return App.contracts.ETHtalks.methods.records(id).call()
                 }).then(function(record) {
                     console.log(record);
@@ -196,6 +195,20 @@ $(function() {
                 })
                 .on("error", console.error);
                 */
+            });
+        });
+
+        $("#withdrawButton").click(function(event) {
+            event.preventDefault();
+
+            console.log("withdraw");
+            web3.eth.getAccounts().then(function(accounts) {
+                var account = accounts[0];
+                App.contracts.ETHtalks.methods.withdraw().send({from: account}).then(function(receipt) {
+                    console.log(receipt);
+                }).catch(function(error) {
+                    console.log(error);
+                });
             });
         });
     });

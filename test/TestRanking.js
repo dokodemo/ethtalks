@@ -44,12 +44,22 @@ contract('Ranking', async (accounts) => {
     });
 
     it("testListRecords", async () => {
-        let name = "Baidu";
-        let link = "https://baidu.com";
-
         let instance = await Ranking.deployed();
-        // let recordIds = await instance.listRecords();
-        // console.log(recordIds);
+        let recordIds = await instance.listRecords();
+
+        let records = new Array();
+
+        for (let i = 0; i < recordIds.length; i++) {
+            let recordId = recordIds[i].toNumber();
+
+            records[i] = await instance.records(recordId);
+        }
+
+        for (let i = 0; i < recordIds.length - 1; i++) {
+            console.log(recordIds[i] + " : " + records[i][0]);
+
+            assert(records[i][0].toNumber() >= records[i + 1][0].toNumber());
+        }
 
         // assert.equal(recordIds[0].toNumber(), 4);
         // assert.equal(recordIds[1].toNumber(), 3);

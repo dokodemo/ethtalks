@@ -25,11 +25,11 @@ contract Ranking is Ownable {
     }
 
     function withdraw() external onlyOwner {
-        owner.transfer(this.balance);
+        owner.transfer(address(this).balance);
     }
 
     function getBalance() external view returns (uint) {
-        return this.balance;
+        return address(this).balance;
     }
 
     function getRecordCount() external view returns (uint) {
@@ -54,5 +54,30 @@ contract Ranking is Ownable {
         require(msg.value >= bid + 0.0001 ether);
         records[_recordId] = Record(bid + msg.value, _name, _link);
         UpdateEvent (_recordId, msg.value, _name, _link);
+    }
+
+    //Bubble sort
+    function listRecords () external view returns (uint[]) {
+        uint[] memory bids = new uint[](records.length);
+        uint[] memory recordIds = new uint[](records.length);
+        for (uint i = 0; i < records.length; i++) {
+            bids[i] = records[records.length-i-1].bid;
+            recordIds[i] = records.length-i-1;
+        }
+
+        for (uint j = 0; j < bids.length; j++) {
+            for (uint k = 0; k < bids.length - j - 1; k++) {
+                if (bids[k] < bids[k+1]) {
+                    uint tempBid = bids[k+1];
+                    bids[k+1] = bids[k];
+                    bids[k] = tempBid;
+
+                    uint tempRecordId = recordIds[k+1];
+                    recordIds[k+1] = recordIds[k];
+                    recordIds[k] = tempRecordId;
+                }
+            }
+        }
+        return recordIds;
     }
 }

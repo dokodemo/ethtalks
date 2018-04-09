@@ -4,30 +4,13 @@ contract('Ranking', async (accounts) => {
     const totalCount = 20;
     let totalBalance = 0;
 
-    it("testRecordLimit", async () => {
-        let instance = await Ranking.deployed();
-
-        let bid = web3.toWei(0.0001, "ether");
-        let name = "12345678901234567890"
-        let link = "12345678901234567890123456789012345678901234567890";
-
-        let result = null;
-        try {
-            result = await instance.createRecord(name, link, { value: bid });
-            //console.log(result);
-        } catch(err) {
-            //console.log(err);
-        }
-        assert(result == null);
-    });
-
     it("testCreateRecord", async () => {
         let instance = await Ranking.deployed();
 
         for (let i = 0; i < totalCount; i++) {
             let rand = Math.floor(Math.random() * totalCount);
 
-            let bid = web3.toWei(Math.random(), "ether");
+            let bid = web3.toWei(0.001 + Math.random(), "ether");
             let name = "Baidu" + rand;
             let link = "https://baidu.com" + rand;
 
@@ -59,7 +42,7 @@ contract('Ranking', async (accounts) => {
 
     it("testSupportRecord", async () => {
         let id = Math.floor(Math.random() * totalCount);
-        let bid = web3.toWei(Math.random(), "ether");
+        let bid = web3.toWei(0.001 + Math.random(), "ether");
 
         totalBalance = web3.toBigNumber(bid).add(totalBalance);
 
@@ -109,5 +92,22 @@ contract('Ranking', async (accounts) => {
         // console.log(recordCount);
 
         assert.equal(count.toNumber(), totalCount);
+    });
+    
+    it("testRecordLimit", async () => {
+        let instance = await Ranking.deployed();
+
+        let bid = web3.toWei(0.001, "ether");
+        let name = "123456789012345678901"
+        let link = "123456789012345678901234567890123456789012345678901";
+
+        let result = null;
+        try {
+            result = await instance.createRecord(name, link, { value: bid });
+            // console.log(result);
+        } catch (err) {
+            // console.log(err);
+        }
+        assert(result == null);
     });
 });

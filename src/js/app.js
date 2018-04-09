@@ -10,8 +10,8 @@ App = {
         if (typeof web3 !== "undefined") {
             App.web3Provider = web3.currentProvider;
         } else {
-            //App.web3Provider = new Web3.providers.HttpProvider("https://mainnet.infura.io/HcyKnfsZ0pvLCWg1URtv");
-            App.web3Provider = new Web3.providers.HttpProvider("http://127.0.0.1:9545");
+            App.web3Provider = new Web3.providers.HttpProvider("https://ropsten.infura.io/bGLfJpFytHXJJOq0Ovdy");
+            //App.web3Provider = new Web3.providers.HttpProvider("http://127.0.0.1:9545");
         }
         web3 = new Web3(App.web3Provider);
       
@@ -40,7 +40,9 @@ App = {
     },
 
     fetchList: function() {
+        console.log("fetchList");
         App.contracts.ranking.methods.listRecords().call().then(function(results) {
+            console.log(results);
             results.sort(function(l, r) {
                 if (l[1] > r[1]) return -1;
                 if (l[1] < r[1]) return 1;
@@ -61,14 +63,43 @@ App = {
                         <div class="col-2">${(i + 1)}</div>
                         <div class="col"><a href="${record.link}" target="_blank">${record.name}</a></div>
                         <div class="col">${web3.utils.fromWei(record.bid, 'ether')} ETH</div>
-                        <div class="col text-left"><a href="">赞助</a></div>
+                        <div class="col">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">支持</div>
+                                </div>
+                                <input type="number" class="form-control" id="ethTalksValue${recordId}" value="0.001" min="0.001" step="0.001">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">ETH</div>
+                                </div>
+                                <button type="submit" class="btn btn-primary ml-2" onClick="App.supportRecord(${recordId})">确定</button>
+                            </div>
+                            
+                        </div>
                     </div>
                     <hr class="my-1">
-                `;
+                    `;
                 }
                 
                 $("#rankList").html(html);
             })();
+        });
+    },
+
+    supportRecord: function(recordId) {
+        console.log(recordId);
+        var value = $(`#ethTalksValue${recordId}`).val();
+        web3.eth.getAccounts().then(function(accounts) {
+            if (accounts.length > 0) {
+                var account = accounts[0];
+                App.contracts.ranking.methods.supportRecord(recordId).send({from: account, value: web3.utils.toWei(value, "ether")})
+                .then(function(receipt) {
+                    App.fetchList();
+                });
+            } else {
+                alert("Your metamask is locked!");
+            }
+            
         });
     },
 
@@ -135,13 +166,11 @@ $(function() {
             var link = $("#ethTalksLink").val();
             var value = $("#ethTalksValue").val();
 
-            var isDone = false;
             web3.eth.getAccounts().then(function(accounts) {
                 if (accounts.length > 0) {
                     var account = accounts[0];
                     App.contracts.ranking.methods.createRecord(name, link).send({from: account, value: web3.utils.toWei(value, "ether")})
                     .then(function(receipt) {
-                        console.log(receipt);
                         App.fetchList();
                     });
                 } else {

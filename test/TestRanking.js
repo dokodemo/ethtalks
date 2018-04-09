@@ -68,22 +68,22 @@ contract('Ranking', async (accounts) => {
         assert.equal(result.length, totalCount);
     });
 
-    it("testGetBalance", async () => {
-        let instance = await Ranking.deployed();
-        let balance = await instance.getBalance();
-        // console.log(balance);
+    // it("testGetBalance", async () => {
+    //     let instance = await Ranking.deployed();
+    //     let balance = await instance.getBalance();
+    //     // console.log(balance);
 
-        assert.equal(balance.toNumber (), totalBalance);
-    });
+    //     assert.equal(balance.toNumber (), totalBalance);
+    // });
 
     it("testWithdraw", async () => {
         let instance = await Ranking.deployed();
         let result = await instance.withdraw({ from: accounts[0] });
         // console.log(result);
-        let balance = await instance.getBalance();
+        // let balance = await instance.getBalance();
         // console.log(balance);
 
-        assert.equal(balance.toNumber(), 0);
+        // assert.equal(balance.toNumber(), 0);
     });
 
     it("testGetRecordCount", async () => {

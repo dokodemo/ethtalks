@@ -63,9 +63,9 @@ contract Ranking {
         return result;
     }
 
-    function getBalance() external onlyOwner view returns (uint) {
-        return address(this).balance;
-    }
+    // function getBalance() external onlyOwner view returns (uint) {
+    //     return address(this).balance;
+    // }
 
     function getRecordCount() external view returns (uint) {
         return records.length;

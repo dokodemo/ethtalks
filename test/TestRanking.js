@@ -4,6 +4,23 @@ contract('Ranking', async (accounts) => {
     const totalCount = 20;
     let totalBalance = 0;
 
+    it("testRecordLimit", async () => {
+        let instance = await Ranking.deployed();
+
+        let bid = web3.toWei(0.001, "ether");
+        let name = "12345678901234567你好好";
+        let link = "12345678901234567890123456789012345678901234567890";
+
+        try {
+            let result = await instance.createRecord(name, link, { value: bid });
+            console.log(result);
+        } catch(err) {
+            console.log(err);
+        }
+        
+    });
+
+    /*
     it("testCreateRecord", async () => {
         let instance = await Ranking.deployed();
 
@@ -93,4 +110,5 @@ contract('Ranking', async (accounts) => {
 
         assert.equal(count.toNumber(), totalCount);
     });
+    */
 });

@@ -13,9 +13,6 @@ contract Ranking {
     address public owner;
     Record[] public records;
 
-    // mapping (uint => address) public recordToOwner;
-    // mapping (address => uint) public ownerRecordCount;
-
     function Ranking() public {
         owner = msg.sender;
     }
@@ -24,11 +21,6 @@ contract Ranking {
         require(msg.sender == owner);
         _;
     }
-
-    // modifier onlyOwnerOf(uint _id) {
-    //     require(msg.sender == recordToOwner[_id]);
-    //     _;
-    // }
 
     function withdraw() external onlyOwner {
         owner.transfer(address(this).balance);
@@ -40,16 +32,15 @@ contract Ranking {
     }
 
     function createRecord (string _name, string _link) external payable {
-        require(msg.value >= 0.0001 ether);
+        require(msg.value >= 0.001 ether);
         require(_utfStringLength(_name) <= 20);
         require(_utfStringLength(_link) <= 50);
         uint id = records.push(Record(msg.value, _name, _link)) - 1;
-        // recordToOwner[id] = msg.sender;
         CreateEvent(id, msg.value, _name, _link);
     }
 
     function supportRecord(uint _id) external payable {
-        require(msg.value >= 0.0001 ether);
+        require(msg.value >= 0.001 ether);
         records[_id].bid += msg.value;
         SupportEvent (_id, records[_id].bid);
     }
@@ -62,11 +53,7 @@ contract Ranking {
         }
         return result;
     }
-
-    function getBalance() external onlyOwner view returns (uint) {
-        return address(this).balance;
-    }
-
+    
     function getRecordCount() external view returns (uint) {
         return records.length;
     }

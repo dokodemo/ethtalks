@@ -16,7 +16,7 @@
 <body>
 
     <div class="container text-center mt-4">
-        <img src="./images/eth-talks-logo.png" style="height:100px; width: 248px;">
+        <img src="./images/eth-talks-logo.png" style="height:100px; width: 275px;">
     </div>
     <div class="container text-center mt-4">
         <p style="font-size: 1.2rem;">基于以太坊区块链实现的付费排行榜，您的推广文案及链接将永久存在，欢迎提供有趣、有价值的链接。</p>
@@ -65,14 +65,14 @@
                 <p class="mt-1">解锁后，<a href=".">重试</a>。</p>
             </div>
             <div id="noWeb3">
-                <p>You should install <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" target="_blank">MetaMask</a> for the full experience!</p>
+                <p>需要安装 MetaMask 来完成 ETH 的支付。</p>
                 <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" target="_blank"><img src="./images/metamask-logo.png" style="width:200px;"></a>
-                <p style="margin-top:20px">Once installed, <a href=".">try again</a>.</p>
+                <p style="margin-top:20px">解锁后，<a href=".">重试</a>。</p>
             </div>
             <div id="noWeb3Mobile">
-                <p>On mobile?</p>
-                <p>You should install <a href="https://www.cipherbrowser.com/" target="_blank">Cipher</a> for a full web3 experience!</p>
-                <p>Or visit us in a desktop browser with <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" target="_blank">MetaMask</a> installed.</p>
+                <p>在手机上使用？</p>
+                <p>建议下载 <a href="https://www.cipherbrowser.com/" target="_blank">Cipher</a> 来使用。</p>
+                <p>或者在电脑端通过 <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" target="_blank">MetaMask</a> 来使用。</p>
             </div>
         </div>
     </div>
@@ -96,7 +96,7 @@
             <a href="https://www.cipherbrowser.com/" target="_blank"><img src="./images/cipher-logo-black-text.png"></a>
         </div>
         <div class="row justify-content-center">
-            <div class="col-auto">
+            <div class="col-md-5">
                 <p class="font-italic" style="font-size: 0.8rem;">
                     * 推广文案应符合广告法要求，否则我们会对其进行调整。
                     <br>
@@ -111,6 +111,22 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modalAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAlertTitle">提示</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalAlertContent">输入有误</p>
+                </div>
+            </div>
+        </div>
+        </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

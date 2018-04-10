@@ -59,12 +59,14 @@ App = {
                     let fontSize = (2 - i * 0.1).toFixed(2);
                     if (fontSize < 0.2) fontSize = 0.2;
                     html += `
-                    <div class="row text-center" style="font-size: ${fontSize}rem;">
-                        <div class="col-2">${(i + 1)}</div>
-                        <div class="col"><a href="${record.link}" target="_blank">${record.name}</a></div>
-                        <div class="col">${web3.utils.fromWei(record.bid, 'ether')} ETH</div>
-                        <div class="col">
-                            <div class="input-group">
+                    <div class="p-3 ${i % 2 == 0 ? "bg-light" : "bg-white"} record">
+                        <div class="row text-center">
+                            <div class="col-2">${(i + 1)}</div>
+                            <div class="col"><a href="${record.link}" target="_blank">${record.name}</a></div>
+                            <div class="col">${web3.utils.fromWei(record.bid, 'ether')} ETH</div>                            
+                        </div>
+                        <div class="row justify-content-end mt-2 support" style="display:none;">
+                            <div class="col-4 input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">支持</div>
                                 </div>
@@ -74,10 +76,8 @@ App = {
                                 </div>
                                 <button type="submit" class="btn btn-primary ml-2" onClick="App.supportRecord(${recordId})">确定</button>
                             </div>
-                            
                         </div>
                     </div>
-                    <hr class="my-1">
                     `;
                 }
                 
@@ -192,6 +192,14 @@ $(function() {
                     console.log(error);
                 });
             });
+        });
+
+        $(document).on("mouseenter", ".record", function() {            
+            $(this).find(".support").show();
+        });
+        
+        $(document).on("mouseleave", ".record", function() {
+            $(this).find(".support").hide();
         });
     });
 });

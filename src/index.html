@@ -10,71 +10,61 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
 
-    <title>充值一下，你就知道</title>
+    <title>区块链付费排行榜</title>
 </head>
 
 <body>
 
     <div class="container text-center mt-4">
-        <img src="./images/eth-talks-logo.png" style="height:100px; width: 151px;">
+        <img src="./images/eth-talks-logo.png" style="height:100px; width: 248px;">
     </div>
-
-    <div class="container">
-        <h3>使用说明</h3>
-        <ul>
-            <li>基于以太坊区块链实现的广告牌。</li>
-            <li>用户发布的信息会永远存在区块链上。</li>
-            <li>收集有价值的网络链接，所得收入将用于本站的推广。</li>
-            <li>文案内容不能超过20个字符，应遵守当地法律、法规。</li>
-            <li>可以在 Etherscan 上查看我们的合约：<a href="https://etherscan.io/address/0x85Dd50BB40b7770564d35D71B0C6EAf3ec1d9603" target="_blank">0x85Dd50BB40b7770564d35D71B0C6EAf3ec1d9603</a>。</li>
-            <li><a href="https://otcbtc.com/sell_offers?currency=eth&fiat_currency=cny&payment_type=all" target="_blank">购买 ETH</a></li>
-            <li>项目源码：<a href="https://github.com/Dokodemo/ethtalks">Github</a></li>
-        </ul>
-    </div>
-
-    <div class="container">
-        <h3>竞价排名</h3>
-        <form>
-            <div class="form-row">
-                <div class="col-auto mb-2">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">文案</div>
+    <div class="container text-center mt-4">
+        <p style="font-size: 1.2rem;">基于以太坊区块链实现的付费排行榜，您的推广文案及链接将永久存在，欢迎提供有趣、有价值的链接。</p>
+        <button type="button" class="btn btn-primary mt-4" id="joinButton">加入排行榜</button>
+        <div id="panel" class="container p-3 mt-4 bg-light">
+            <div id="joinForm">
+                <form>
+                    <div class="form-row">
+                        <div class="col mb-2">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">推广文案</div>
+                                </div>
+                                <input type="text" class="form-control" id="ethTalksName" placeholder="不超过20个字符">
+                            </div>
                         </div>
-                        <input type="text" class="form-control" id="ethTalksName" placeholder="最大的同性社交网站">
-                    </div>
-                </div>
-                <div class="col-auto mb-2">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">链接</div>
+                        <div class="col mb-2">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">推广链接</div>
+                                </div>
+                                <input type="text" class="form-control" id="ethTalksLink" placeholder="不超过50个字符">
+                            </div>
                         </div>
-                        <input type="text" class="form-control" id="ethTalksLink" placeholder="https://github.com">
-                    </div>
-                </div>
-                <div class="col-auto mb-2">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">出价</div>
-                        </div>
-                        <input type="number" class="form-control" id="ethTalksValue" value="0.001" min="0.001" step="0.001">
-                        <div class="input-group-append">
-                            <div class="input-group-text">ETH</div>
+                        <div class="col mb-2">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">出价</div>
+                                </div>
+                                <input type="number" class="form-control" id="ethTalksValue" value="0.001" min="0.001" step="0.001">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">ETH</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-auto mb-2">
-                    <button type="submit" class="btn btn-primary" id="bidButton">确定</button>
-                </div>
-                <div class="col-auto mb-2">
-                    <button type="submit" class="btn btn-primary" id="withdrawButton">取钱</button>
-                </div>
+                    <div class="form-row">
+                        <div class="col mb-2">
+                            <button type="submit" class="btn btn-primary" id="bidButton">提交</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </form>
-
-        <button type="button" class="btn btn-primary" id="insertButton">INSERT ETH</button>
-        <div id="panel">
-            <div id="noWeb3" style="display: block;">
+            <div id="metamaskLocked">
+                <p>请解锁 MetaMask。</p>
+                <p class="mt-1">解锁后，<a href=".">重试</a>。</p>
+            </div>
+            <div id="noWeb3">
                 <p>You should install <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" target="_blank">MetaMask</a> for the full experience!</p>
                 <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" target="_blank"><img src="./images/metamask-logo.png" style="width:200px;"></a>
                 <p style="margin-top:20px">Once installed, <a href=".">try again</a>.</p>
@@ -85,37 +75,42 @@
                 <p>Or visit us in a desktop browser with <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" target="_blank">MetaMask</a> installed.</p>
             </div>
         </div>
-
-        <div class="container mt-4">
-            
-            <div class="row justify-content-center">
-                <h3>排行榜</h3>
+    </div>
+    <div class="container mt-4">
+        <div class="p-3 bg-white">
+            <div class="row text-center">
+                <div class="col-2"><p class="font-weight-bold">排名</p></div>
+                <div class="col"><p class="font-weight-bold">文案</p></div>
+                <div class="col-2"><p class="font-weight-bold">出价</p></div>                            
             </div>
+        </div>
+        <div class="container" id="rankList">
+        </div>
+    </div>
 
-            <div class="row text-center font-weight-bold p-3">
-                <div class="col-2">排名</div>
-                <div class="col">文案</div>
-                <div class="col">出价</div>
-                <div class="col"></div>
-            </div>
-
-            <div class="container" id="rankList">
-            </div>
-
-            <div class="container text-center my-4">
-                我们推荐使用<br>
-                <a href="https://metamask.io/" target="_blank"><img src="./images/metamask-logo.png"></a>&nbsp;&nbsp;&nbsp;
-                <a href="https://trustwalletapp.com/" target="_blank"><img src="./images/trust-browser-logo.png"></a>&nbsp;&nbsp;&nbsp;
-                <a href="https://www.cipherbrowser.com/" target="_blank"><img src="./images/cipher-logo-black-text.png"></a>
-
-                <p>
-                    发送0.01个ETH到我们的合约<br>然后你将收到一个等价于Chibi Founder战士的FCF<br>
-                    <em style="font-size: 0.8em;">2-3 GWEI足以检查 <a href="https://ethgasstation.info/" target="_blank">ETH Gas Station</a> 流量</em>
+    <div class="container mt-4">
+        <div class="container text-center my-4">
+            <p class="font-weight-bold">我们推荐使用</p>
+            <a href="https://metamask.io/" target="_blank"><img src="./images/metamask-logo.png"></a>&nbsp;&nbsp;&nbsp;
+            <a href="https://trustwalletapp.com/" target="_blank"><img src="./images/trust-browser-logo.png"></a>&nbsp;&nbsp;&nbsp;
+            <a href="https://www.cipherbrowser.com/" target="_blank"><img src="./images/cipher-logo-black-text.png"></a>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <p class="font-italic" style="font-size: 0.8rem;">
+                    * 推广文案应符合广告法要求，否则我们会对其进行调整。
+                    <br>
+                    * 合约信息：<a href="https://etherscan.io/address/0x85Dd50BB40b7770564d35D71B0C6EAf3ec1d9603" target="_blank">0x85Dd50BB40b7770564d35D71B0C6EAf3ec1d9603</a>。
+                    <br>
+                    * 项目源码：<a href="https://github.com/Dokodemo/ethtalks">Github</a>
+                    <br>
+                    * <a href="https://otcbtc.com/sell_offers?currency=eth&fiat_currency=cny&payment_type=all" target="_blank">购买 ETH</a>
+                    <br>
+                    * 查看 Gas 价格：<a href="https://ethgasstation.info/" target="_blank">ETH Gas Station</a>
                 </p>
             </div>
         </div>
     </div>
-    
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

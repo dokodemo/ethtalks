@@ -26,8 +26,9 @@ contract Ranking {
         owner.transfer(address(this).balance);
     }
 
-    function updateRecordName(uint _id, string _name) external onlyOwner  {
+    function updateRecordName(uint _id, string _name) external onlyOwner {
         require(_utfStringLength(_name) <= 20);
+        require(_id < records.length);
         records[_id].name = _name;
     }
 
@@ -41,6 +42,7 @@ contract Ranking {
 
     function supportRecord(uint _id) external payable {
         require(msg.value >= 0.001 ether);
+        require(_id < records.length);
         records[_id].bid += msg.value;
         SupportEvent (_id, records[_id].bid);
     }
@@ -58,7 +60,7 @@ contract Ranking {
         return records.length;
     }
 
-    function _utfStringLength(string str) private pure returns (uint length) {
+    function _utfStringLength(string str) private pure returns (uint) {
         uint i = 0;
         uint l = 0;
         bytes memory string_rep = bytes(str);

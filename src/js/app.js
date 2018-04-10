@@ -186,7 +186,7 @@ $(function() {
             console.log("withdraw");
             web3.eth.getAccounts().then(function(accounts) {
                 var account = accounts[0];
-                App.contracts.ETHtalks.methods.withdraw().send({from: account}).then(function(receipt) {
+                App.contracts.ranking.methods.withdraw().send({from: account}).then(function(receipt) {
                     console.log(receipt);
                 }).catch(function(error) {
                     console.log(error);

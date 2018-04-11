@@ -20,6 +20,9 @@
     </div>
     <div class="container text-center mt-4">
         <p style="font-size: 1.2rem;">基于以太坊区块链实现的付费排行榜，您的推广文案及链接将永久存在，欢迎提供有趣、有价值的链接。</p>
+        <p class="font-italic" style="font-size: 0.8rem;">
+            合约信息：<a href="https://etherscan.io/address/0x85Dd50BB40b7770564d35D71B0C6EAf3ec1d9603" target="_blank">0x85Dd50BB40b7770564d35D71B0C6EAf3ec1d9603</a>。
+        </p>
         <button type="button" class="btn btn-primary mt-4" id="joinButton">加入排行榜</button>
         <div id="panel" class="container p-3 mt-4 bg-light">
             <div id="joinForm">
@@ -54,25 +57,26 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="col mb-2">
-                            <button type="submit" class="btn btn-primary" id="bidButton">提交</button>
+                            <div class="col mb-2">
+                                <button type="submit" class="btn btn-primary" id="bidButton">提交</button>
+                            </div>
                         </div>
-                    </div>
+                    <p class="font-italic" style="font-size: 0.8rem;">
+                        文案应符合基本广告规范，我们保有修改文案的权利。<br>
+                        购买 ETH：<a href="https://otcbtc.com/sell_offers?currency=eth&fiat_currency=cny&payment_type=all" target="_blank">OTCBTC</a>，
+                        查看 Gas 价格：<a href="https://ethgasstation.info/" target="_blank">ETH Gas Station</a>。
+                    </p>
                 </form>
             </div>
             <div id="metamaskLocked">
-                <p>请解锁 MetaMask。</p>
-                <p class="mt-1">解锁后，<a href=".">重试</a>。</p>
+                <p>请解锁 MetaMask</p>
+                <p class="mt-1">解锁后，<a href=".">点击重试</a>。</p>
             </div>
             <div id="noWeb3">
-                <p>需要安装 MetaMask 来完成 ETH 的支付。</p>
-                <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" target="_blank"><img src="./images/metamask-logo.png" style="width:200px;"></a>
-                <p style="margin-top:20px">解锁后，<a href=".">重试</a>。</p>
-            </div>
-            <div id="noWeb3Mobile">
-                <p>在手机上使用？</p>
-                <p>建议下载 <a href="https://www.cipherbrowser.com/" target="_blank">Cipher</a> 来使用。</p>
-                <p>或者在电脑端通过 <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" target="_blank">MetaMask</a> 来使用。</p>
+                <p>加入排行榜需要支付 ETH，我们推荐使用：</p>
+                <a href="https://metamask.io/" target="_blank"><img src="./images/metamask-logo.png"></a>&nbsp;&nbsp;&nbsp;
+                <a href="https://trustwalletapp.com/" target="_blank"><img src="./images/trust-browser-logo.png"></a>&nbsp;&nbsp;&nbsp;
+                <a href="https://www.cipherbrowser.com/" target="_blank"><img src="./images/cipher-logo-black-text.png"></a>
             </div>
         </div>
     </div>
@@ -84,29 +88,20 @@
                 <div class="col-2"><p class="font-weight-bold">出价</p></div>                            
             </div>
         </div>
-        <div class="container" id="rankList">
+        <div id="rankLoading" class="p-5 bg-light text-center">
+            <p class="m-0">正在从以太坊区块链获取排行榜信息...</p>
+        </div>
+        <div id="rankList">
         </div>
     </div>
 
     <div class="container mt-4">
-        <div class="container text-center my-4">
-            <p class="font-weight-bold">我们推荐使用</p>
-            <a href="https://metamask.io/" target="_blank"><img src="./images/metamask-logo.png"></a>&nbsp;&nbsp;&nbsp;
-            <a href="https://trustwalletapp.com/" target="_blank"><img src="./images/trust-browser-logo.png"></a>&nbsp;&nbsp;&nbsp;
-            <a href="https://www.cipherbrowser.com/" target="_blank"><img src="./images/cipher-logo-black-text.png"></a>
-        </div>
         <div class="row justify-content-center">
-            <div class="col-md-5">
-                <p class="font-italic" style="font-size: 0.8rem;">
-                    * 推广文案应符合广告法要求，否则我们会对其进行调整。
-                    <br>
-                    * 合约信息：<a href="https://etherscan.io/address/0x85Dd50BB40b7770564d35D71B0C6EAf3ec1d9603" target="_blank">0x85Dd50BB40b7770564d35D71B0C6EAf3ec1d9603</a>。
-                    <br>
-                    * 项目源码：<a href="https://github.com/Dokodemo/ethtalks">Github</a>
-                    <br>
-                    * <a href="https://otcbtc.com/sell_offers?currency=eth&fiat_currency=cny&payment_type=all" target="_blank">购买 ETH</a>
-                    <br>
-                    * 查看 Gas 价格：<a href="https://ethgasstation.info/" target="_blank">ETH Gas Station</a>
+            <div class="col-auto">
+                <p style="color:#a0a0a0">
+                    项目源码：<a href="https://github.com/Dokodemo/ethtalks" target="_blank"><img src="./images/github-icon.png" style="width: 34px; height:40px;"></a>
+                    &nbsp;&nbsp;&nbsp;
+                    联系方式：<a href="https://t.me/ethtalks" target="_blank"><img src="./images/telegram-icon.png" style="width: 40px; height:34px;"></a>
                 </p>
             </div>
         </div>

@@ -121,6 +121,9 @@ App = {
                 App.contracts.ranking.methods.supportRecord(recordId).send({from: account, value: web3.utils.toWei(value, "ether")})
                 .then(function(receipt) {
                     App.fetchList();
+                }).catch(function(error) {
+                    $("#modalAlertContent").text("支付失败");
+                    $("#modalAlert").modal();
                 });
             } else {
                 alert("Your metamask is locked!");
@@ -187,6 +190,9 @@ $(function() {
                 App.contracts.ranking.methods.createRecord(name, link).send({from: account, value: web3.utils.toWei(value, "ether")})
                 .then(function(receipt) {
                     App.fetchList();
+                }).catch(function(error) {
+                    $("#modalAlertContent").text("支付失败");
+                    $("#modalAlert").modal();
                 });
             } else {
                 $("#modalAlertContent").text("请解锁 MetaMask。");

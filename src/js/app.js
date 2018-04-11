@@ -57,15 +57,14 @@ App = {
                 for (var i = 0; i < results.length; i++) {
                     let recordId = results[i][0];
                     let record = await App.contracts.ranking.methods.records(recordId).call();
-                    
-                    let fontSize = (2 - i * 0.1).toFixed(2);
-                    if (fontSize < 0.2) fontSize = 0.2;
+
+                    let bid = parseFloat(web3.utils.fromWei(record.bid, "ether")).toFixed(3);
                     html += `
                     <div class="p-3 ${i % 2 == 0 ? "bg-light" : "bg-white"} record">
                         <div class="row text-center">
                             <div class="col-2">${(i + 1)}</div>
-                            <div class="col"><a href="${record.link}" target="_blank">${record.name}</a></div>
-                            <div class="col-2">${web3.utils.fromWei(record.bid, "ether")} ETH <a href="javascript:App.showSupport(${recordId})" id="supportTag" style="display:none">支持</a> </div>                            
+                            <div class="col" style="font-size: 1.4rem;"><a href="${record.link}" target="_blank">${record.name}</a></div>
+                            <div class="col-2 text-left">${bid} ETH <a href="javascript:App.showSupport(${recordId})" id="supportTag" style="display:none">支持</a> </div>                            
                         </div>
                         <div class="row justify-content-end mt-2 support" id="support${recordId}" style="display:none;">
                             <div class="col-3 input-group">

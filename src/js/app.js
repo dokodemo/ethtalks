@@ -1,6 +1,7 @@
 App = {
     web3Provider: null,
     contracts: {},
+    canPay: false,
 
     init: function() {
         App.initWeb3();
@@ -9,9 +10,22 @@ App = {
     initWeb3: function() {
         if (typeof web3 !== "undefined") {
             App.web3Provider = web3.currentProvider;
+
+            App.canPay = true;
+            web3.eth.getAccounts(function(err, accounts) {
+                if (err != null) {
+                    console.log("发生错误：" + err);
+                    $("#noWeb3").show();
+                } if (accounts.length == 0) {
+                    $("#metamaskLocked").show();
+                } else {
+                    $("#joinForm").show();
+                }
+            });
         } else {
             App.web3Provider = new Web3.providers.HttpProvider("https://ropsten.infura.io/bGLfJpFytHXJJOq0Ovdy");
-            //App.web3Provider = new Web3.providers.HttpProvider("http://127.0.0.1:9545");
+            
+            $("#noWeb3").show();
         }
         web3 = new Web3(App.web3Provider);
       
@@ -67,7 +81,7 @@ App = {
                             <div class="col-2 text-left">${bid} ETH <a href="javascript:App.showSupport(${recordId})" id="supportTag" style="display:none">支持</a> </div>                            
                         </div>
                         <div class="row justify-content-end mt-2 support" id="support${recordId}" style="display:none;">
-                            <div class="col-3 input-group">
+                            <div class="col-md-3 input-group">
                                 <input type="number" class="form-control" id="ethTalksValue${recordId}" value="0.001" min="0.001" step="0.001">
                                 <div class="input-group-append">
                                     <div class="input-group-text">ETH</div>
@@ -85,7 +99,11 @@ App = {
     },
 
     showSupport: function(recordId) {
-        $(`#support${recordId}`).toggle();
+        if (App.canPay) {
+            $(`#support${recordId}`).toggle();
+        } else {
+            $("#modalNoWeb3").modal();
+        }
     },
 
     supportRecord: function(recordId) {
@@ -113,34 +131,12 @@ App = {
 }
 
 $(function() {
-    $("#panel").hide();
-    $("#joinForm").hide();
-    $("#metamaskLocked").hide();
-    $("#noWeb3").hide();
-
-    try {
-        if (web3) {
-            web3.eth.getAccounts(function(err, accounts){
-                if (err != null) {
-                    alert("发生错误：" + err);
-                } if (accounts.length == 0) {
-                    $("#metamaskLocked").show();
-                } else {
-                    console.log("当前以太坊账号是：" + accounts[0]);
-                    $("#joinForm").show();
-                }
-            });
-        }
-    } catch(e) {
-        $("#noWeb3").show();
-    }
+    App.init();
 
     $("#joinButton").click(function(e) {
         $("#panel").toggle();
         e.preventDefault();
     });
-
-    App.init();
 
     $("#ethTalksValue").blur(function() {
         var num = parseFloat($(this).val());

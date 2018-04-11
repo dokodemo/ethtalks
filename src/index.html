@@ -24,11 +24,11 @@
             合约信息：<a href="https://etherscan.io/address/0x85Dd50BB40b7770564d35D71B0C6EAf3ec1d9603" target="_blank">0x85Dd50BB40b7770564d35D71B0C6EAf3ec1d9603</a>。
         </p>
         <button type="button" class="btn btn-primary mt-4" id="joinButton">加入排行榜</button>
-        <div id="panel" class="container p-3 mt-4 bg-light">
-            <div id="joinForm">
+        <div id="panel" class="container p-3 mt-4 bg-light" style="display:none;">
+            <div id="joinForm" style="display:none;">
                 <form>
                     <div class="form-row">
-                        <div class="col mb-2">
+                        <div class="col-md mb-2">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">推广文案</div>
@@ -36,7 +36,7 @@
                                 <input type="text" class="form-control" id="ethTalksName" placeholder="不超过20个字符">
                             </div>
                         </div>
-                        <div class="col mb-2">
+                        <div class="col-md mb-2">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">推广链接</div>
@@ -44,7 +44,7 @@
                                 <input type="text" class="form-control" id="ethTalksLink" placeholder="不超过50个字符">
                             </div>
                         </div>
-                        <div class="col mb-2">
+                        <div class="col-md mb-2">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">出价</div>
@@ -68,14 +68,16 @@
                     </p>
                 </form>
             </div>
-            <div id="metamaskLocked">
+            <div id="metamaskLocked" style="display:none;">
                 <p>请解锁 MetaMask</p>
                 <p class="mt-1">解锁后，<a href=".">点击重试</a>。</p>
             </div>
-            <div id="noWeb3">
-                <p>加入排行榜需要支付 ETH，我们推荐使用：</p>
-                <a href="https://metamask.io/" target="_blank"><img src="./images/metamask-logo.png"></a>&nbsp;&nbsp;&nbsp;
-                <a href="https://trustwalletapp.com/" target="_blank"><img src="./images/trust-browser-logo.png"></a>&nbsp;&nbsp;&nbsp;
+            <div id="noWeb3" style="display:none;">
+                <p class="m-0 font-weight-bold">需要支付 ETH，推荐在电脑端使用：</p>
+                <a href="https://metamask.io/" target="_blank"><img src="./images/metamask-logo.png"></a>
+                <br>
+                <p class="mt-4 mb-0 font-weight-bold">在手机端使用：</p>
+                <a href="https://trustwalletapp.com/" target="_blank"><img src="./images/trust-browser-logo.png"></a>
                 <a href="https://www.cipherbrowser.com/" target="_blank"><img src="./images/cipher-logo-black-text.png"></a>
             </div>
         </div>
@@ -89,7 +91,7 @@
             </div>
         </div>
         <div id="rankLoading" class="p-5 bg-light text-center">
-            <p class="m-0">正在从以太坊区块链获取排行榜信息...</p>
+            <p class="m-0">正在从以太坊区块链获取排行榜...</p>
         </div>
         <div id="rankList">
         </div>
@@ -107,7 +109,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalAlert" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="modalAlert" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -121,7 +123,27 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="modal fade" id="modalNoWeb3" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-body">
+                <div id="noWeb3" class="container-fluid text-center">
+                    <p class="m-0 font-weight-bold">需要支付 ETH，推荐在电脑端使用：</p>
+                    <a href="https://metamask.io/" target="_blank"><img src="./images/metamask-logo.png"></a>
+                    <br>
+                    <p class="mt-4 mb-0 font-weight-bold">在手机端使用：</p>
+                    <a href="https://trustwalletapp.com/" target="_blank"><img src="./images/trust-browser-logo.png"></a>
+                    <a href="https://www.cipherbrowser.com/" target="_blank"><img src="./images/cipher-logo-black-text.png"></a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">知道了</button>
+            </div>
+            </div>
         </div>
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

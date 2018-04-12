@@ -1,6 +1,6 @@
 # ethtalks
 
-基于以太坊区块链实现的付费排行榜，欢迎加入有趣、有价值的链接。
+基于以太坊区块链实现的付费排行榜，欢迎加入有趣、有价值的链接。  
 ETH Talks is a bidding rank on the Ethereum Blockchain. Welcome to provide valuable, meaningful links.
 
 ### 项目依赖 Requirements

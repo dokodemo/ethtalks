@@ -2,7 +2,7 @@
     "port": 8000,
     "server": {
         "baseDir": [
-            "./src",
+            "./docs",
             "./build/contracts"
         ]
     }

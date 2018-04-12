@@ -10,12 +10,147 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
 
-    <title>ETH Talks</title>
+    <title>区块链付费排行榜</title>
 </head>
 
 <body>
 
-    <div class="container text-center mt-4">Stay tuned...</div>
+    <div class="container text-center mt-4">
+        <div class="row justify-content-end">
+            <div class="col-4">
+                <img src="./images/eth-talks-logo.png" style="height:100px;">
+            </div>
+            <div class="col-4 align-self-center">
+                <a href="./en/index.html">English</a>
+            </div>
+        </div>
+    </div>
+    <div class="container text-center mt-4">
+        <p style="font-size: 1.2rem;">基于以太坊区块链实现的付费排行榜，欢迎加入有趣、有价值的链接。</p>
+        <p class="font-italic" style="font-size: 0.8rem;">
+            合约信息：<a href="https://etherscan.io/address/0x85Dd50BB40b7770564d35D71B0C6EAf3ec1d9603" target="_blank">0x85Dd50BB40b7770564d35D71B0C6EAf3ec1d9603</a>。
+        </p>
+        <button type="button" class="btn btn-primary mt-4" id="joinButton">加入排行榜</button>
+        <div id="panel" class="container p-3 mt-4 bg-light" style="display:none;">
+            <div id="joinForm" style="display:none;">
+                <form>
+                    <div class="form-row">
+                        <div class="col-md mb-2">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">推广文案</div>
+                                </div>
+                                <input type="text" class="form-control" id="ethTalksName" placeholder="不超过20个字符">
+                            </div>
+                        </div>
+                        <div class="col-md mb-2">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">推广链接</div>
+                                </div>
+                                <input type="text" class="form-control" id="ethTalksLink" placeholder="不超过50个字符">
+                            </div>
+                        </div>
+                        <div class="col-md mb-2">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">出价</div>
+                                </div>
+                                <input type="number" class="form-control" id="ethTalksValue" value="0.001" min="0.001" step="0.001">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">ETH</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                            <div class="col mb-2">
+                                <button type="submit" class="btn btn-primary" id="bidButton">提交</button>
+                            </div>
+                        </div>
+                    <p class="font-italic m-0 mt-2" style="font-size: 0.8rem;">
+                        文案应符合基本广告规范，我们保有修改文案的权利。<br>
+                        购买 ETH：<a href="https://otcbtc.com/sell_offers?currency=eth&fiat_currency=cny&payment_type=all" target="_blank">OTCBTC</a>，
+                        查看 Gas 价格：<a href="https://ethgasstation.info/" target="_blank">ETH Gas Station</a>。
+                    </p>
+                </form>
+            </div>
+            <div id="metamaskLocked" style="display:none;">
+                <p>请解锁 MetaMask</p>
+                <p class="mt-1">解锁后，<a href=".">点击重试</a>。</p>
+            </div>
+            <div id="noWeb3" style="display:none;">
+                <p class="m-0 font-weight-bold">需要支付 ETH，推荐在电脑端使用：</p>
+                <a href="https://metamask.io/" target="_blank"><img src="./images/metamask-logo.png"></a>
+                <br>
+                <p class="mt-4 mb-0 font-weight-bold">在手机端使用：</p>
+                <a href="https://trustwalletapp.com/" target="_blank"><img src="./images/trust-browser-logo.png"></a>
+                <a href="https://www.cipherbrowser.com/" target="_blank"><img src="./images/cipher-logo-black-text.png"></a>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-4">
+        <div class="p-3 bg-white">
+            <div class="row text-center" style="font-size: 1.0rem;">
+                <div class="col-auto col-md-2"><p class="font-weight-bold">排名</p></div>
+                <div class="col"><p class="font-weight-bold">文案</p></div>
+                <div class="col-auto col-md-2"><p class="font-weight-bold">出价</p></div>                            
+            </div>
+        </div>
+        <div id="rankLoading" class="p-5 bg-light text-center">
+            <p class="m-0">正在从以太坊区块链获取排行榜...</p>
+        </div>
+        <div id="rankList">
+        </div>
+    </div>
+
+    <div class="container p-3">
+        <p class="text-center">
+            <a href="https://github.com/Dokodemo/ethtalks" target="_blank" class="text-secondary">
+                <img src="./images/github-icon.png" style="width: 30px;"><span class="ml-2" style="font-size: 0.8rem;">项目源码</span>
+            </a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="https://t.me/ethtalks" target="_blank" class="text-secondary">
+                <img src="./images/telegram-icon.png" style="width: 30px;"><span class="ml-2" style="font-size: 0.8rem;">联系方式</span>
+            </a>
+        </p>
+    </div>
+
+    <div class="modal fade" id="modalAlert" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAlertTitle">提示</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalAlertContent">输入有误</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalNoWeb3" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-body">
+                <div id="noWeb3" class="container-fluid text-center">
+                    <p class="m-0 font-weight-bold">需要支付 ETH，推荐在电脑端使用：</p>
+                    <a href="https://metamask.io/" target="_blank"><img src="./images/metamask-logo.png"></a>
+                    <br>
+                    <p class="mt-4 mb-0 font-weight-bold">在手机端使用：</p>
+                    <a href="https://trustwalletapp.com/" target="_blank"><img src="./images/trust-browser-logo.png"></a>
+                    <a href="https://www.cipherbrowser.com/" target="_blank"><img src="./images/cipher-logo-black-text.png"></a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">知道了</button>
+            </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

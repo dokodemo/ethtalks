@@ -75,22 +75,22 @@ App = {
 
                     let bid = parseFloat(web3.utils.fromWei(record.bid, "ether")).toFixed(3);
                     html += `
-                    <div class="p-3 ${i % 2 == 0 ? "bg-light" : "bg-white"} record">
-                        <div class="row text-center" style="font-size: 1.0rem;">
-                            <div class="col-auto col-md-2">${(i + 1)}</div>
-                            <div class="col"><a href="${record.link}" target="_blank">${record.name}</a></div>
-                            <div class="col-4 col-md-2">${bid} ETH <a href="javascript:App.showSupport(${recordId})" id="supportTag" class="badge badge-primary ml-2" style="display:none">Support</a> </div>                            
-                        </div>
-                        <div class="row justify-content-end mt-2 support" id="support${recordId}" style="display:none;">
-                            <div class="col-md-3 input-group">
+                    <tr class="${i % 2 == 0 ? "bg-light" : "bg-white"} record" data-value="${recordId}">
+                        <td scope="row" class="border-0">${(i + 1)}</td>
+                        <td class="border-0"><a href="${record.link}" target="_blank">${record.name}</a></td>
+                        <td class="border-0">${bid} ETH</td>
+                    </tr>
+                    <tr class="${i % 2 == 0 ? "bg-light" : "bg-white"} support" id="support${recordId}" style="display:none;">
+                        <td scope="row" class="border-0" colspan="3">
+                            <div class="col-md-3 input-group input-group-sm float-right">
                                 <input type="number" class="form-control" id="ethTalksValue${recordId}" value="0.001" min="0.001" step="0.001">
                                 <div class="input-group-append">
-                                    <div class="input-group-text">ETH</div>
+                                    <span class="input-group-text">ETH</span>
+                                    <button type="submit" class="btn btn-primary" onClick="App.supportRecord(${recordId})">Support</button>
                                 </div>
-                                <button type="submit" class="btn btn-primary ml-2" onClick="App.supportRecord(${recordId})">Submit</button>
                             </div>
-                        </div>
-                    </div>
+                        </td>
+                    </tr>
                     `;
                 }
                 $("#rankLoading").hide();
@@ -216,11 +216,15 @@ $(function() {
         });
     });
 
-    $(document).on("mouseenter", ".record", function() {            
-        $(this).find("#supportTag").show();
-    });
+    // $(document).on("mouseenter", ".record", function() {            
+    //     $(this).find("#supportTag").show();
+    // });
     
-    $(document).on("mouseleave", ".record", function() {
-        $(this).find("#supportTag").hide();
+    // $(document).on("mouseleave", ".record", function() {
+    //     $(this).find("#supportTag").hide();
+    // });
+
+    $(document).on("click", ".record", function () {
+        App.showSupport($(this).data("value"));
     });
 });

@@ -18,7 +18,7 @@
     <div class="container text-center mt-4">
         <div class="row justify-content-end">
             <div class="col-4">
-                <img src="../images/eth-talks-logo.png" style="height:100px;">
+                <img src="../images/eth-talks-logo.png" class="img-fluid">
             </div>
             <div class="col-4 align-self-center">
                 <a href="../index.html">中文</a>
@@ -27,7 +27,7 @@
     </div>
     <div class="container text-center mt-4">
         <p style="font-size: 1.2rem;">ETH Talks is a bidding rank on the Ethereum Blockchain. Welcome to provide valuable, meaningful links.</p>
-        <p class="font-italic" style="font-size: 0.8rem;">
+        <p class="font-italic" style="font-size: 0.8rem; word-break: break-all; word-break: break-word">
             Contract Address：<a href="https://ropsten.etherscan.io/address/0x35ff3fe274300b715ae94ca707bc016f300fdc3f" target="_blank">0x35FF3fe274300b715ae94ca707BC016F300FDc3f</a>。
         </p>
         <button type="button" class="btn btn-primary mt-4" id="joinButton">Join the Leaderboard</button>
@@ -89,18 +89,20 @@
             </div>
         </div>
     </div>
-    <div class="container mt-4">
-        <div class="p-3 bg-white">
-            <div class="row text-center">
-                <div class="col-auto col-md-2"><p class="font-weight-bold">RANK</p></div>
-                <div class="col"><p class="font-weight-bold">NAME</p></div>
-                <div class="col-auto col-md-2"><p class="font-weight-bold">BID</p></div>                            
-            </div>
-        </div>
+    <div class="container mt-4 table-responsive">
+        <table class="table table-borderless text-center">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-nowrap border-0" style="width: 15%">RANK</th>
+                    <th scope="col" class="text-nowrap border-0">NAME</th>
+                    <th scope="col" class="text-nowrap border-0" style="width: 15%">BID</th>
+                </tr>
+            </thead>
+            <tbody id="rankList">
+            </tbody>
+        </table>
         <div id="rankLoading" class="p-5 bg-light text-center">
             <p class="m-0">Loading leaderboard from the the Ethereum Blockchain...</p>
-        </div>
-        <div id="rankList">
         </div>
     </div>
 

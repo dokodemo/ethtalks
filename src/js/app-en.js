@@ -2,6 +2,7 @@ App = {
     web3Provider: null,
     contracts: {},
     canPay: false,
+    lastRecordId: -1,
 
     init: function() {
         App.initWeb3();
@@ -75,10 +76,10 @@ App = {
                     let bid = parseFloat(web3.utils.fromWei(record.bid, "ether")).toFixed(3);
                     html += `
                     <div class="p-3 ${i % 2 == 0 ? "bg-light" : "bg-white"} record">
-                        <div class="row text-center">
-                            <div class="col-2">${(i + 1)}</div>
-                            <div class="col" style="font-size: 1.4rem;"><a href="${record.link}" target="_blank">${record.name}</a></div>
-                            <div class="col-2 text-left">${bid} ETH <a href="javascript:App.showSupport(${recordId})" id="supportTag" style="display:none">Support</a> </div>                            
+                        <div class="row text-center" style="font-size: 1.0rem;">
+                            <div class="col-auto col-md-2">${(i + 1)}</div>
+                            <div class="col"><a href="${record.link}" target="_blank">${record.name}</a></div>
+                            <div class="col-4 col-md-2">${bid} ETH <a href="javascript:App.showSupport(${recordId})" id="supportTag" class="badge badge-primary ml-2" style="display:none">Support</a> </div>                            
                         </div>
                         <div class="row justify-content-end mt-2 support" id="support${recordId}" style="display:none;">
                             <div class="col-md-3 input-group">
@@ -101,6 +102,12 @@ App = {
     showSupport: function(recordId) {
         if (App.canPay) {
             $(`#support${recordId}`).toggle();
+
+            if (App.lastRecordId != recordId && App.lastRecordId != -1) {
+                $(`#support${App.lastRecordId}`).hide();
+            }
+
+            App.lastRecordId = recordId;
         } else {
             $("#modalNoWeb3").modal();
         }
@@ -114,6 +121,9 @@ App = {
                 App.contracts.ranking.methods.supportRecord(recordId).send({from: account, value: web3.utils.toWei(value, "ether")})
                 .then(function(receipt) {
                     App.fetchList();
+                }).catch(function(error) {
+                    $("#modalAlertContent").text("Transaction failed");
+                    $("#modalAlert").modal();
                 });
             } else {
                 alert("Your metamask is locked!");
@@ -180,6 +190,9 @@ $(function() {
                 App.contracts.ranking.methods.createRecord(name, link).send({from: account, value: web3.utils.toWei(value, "ether")})
                 .then(function(receipt) {
                     App.fetchList();
+                }).catch(function(error) {
+                    $("#modalAlertContent").text("Transaction failed");
+                    $("#modalAlert").modal();
                 });
             } else {
                 $("#modalAlertContent").text("Your MetaMask is locked!");

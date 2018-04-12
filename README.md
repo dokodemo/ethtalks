@@ -8,7 +8,7 @@ ETH Talks is a bidding rank on the Ethereum Blockchain. Welcome to provide valua
 * Node.js
 * npm
 
-### Getting the Code
+### 下载该项目 Getting the Code
 
 ```bash
 git clone https://github.com/Dokodemo/ethtalks.git

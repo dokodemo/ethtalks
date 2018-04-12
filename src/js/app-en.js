@@ -15,7 +15,7 @@ App = {
             App.canPay = true;
             web3.eth.getAccounts(function(err, accounts) {
                 if (err != null) {
-                    console.log("发生错误：" + err);
+                    console.log(err);
                     $("#noWeb3").show();
                 } if (accounts.length == 0) {
                     $("#metamaskLocked").show();
@@ -79,7 +79,7 @@ App = {
                         <div class="row text-center" style="font-size: 1.0rem;">
                             <div class="col-auto col-md-2">${(i + 1)}</div>
                             <div class="col"><a href="${record.link}" target="_blank">${record.name}</a></div>
-                            <div class="col-4 col-md-2">${bid} ETH <a href="javascript:App.showSupport(${recordId})" id="supportTag" class="badge badge-primary ml-2" style="display:none">支持</a> </div>                            
+                            <div class="col-4 col-md-2">${bid} ETH <a href="javascript:App.showSupport(${recordId})" id="supportTag" class="badge badge-primary ml-2" style="display:none">Support</a> </div>                            
                         </div>
                         <div class="row justify-content-end mt-2 support" id="support${recordId}" style="display:none;">
                             <div class="col-md-3 input-group">
@@ -87,7 +87,7 @@ App = {
                                 <div class="input-group-append">
                                     <div class="input-group-text">ETH</div>
                                 </div>
-                                <button type="submit" class="btn btn-primary ml-2" onClick="App.supportRecord(${recordId})">提交</button>
+                                <button type="submit" class="btn btn-primary ml-2" onClick="App.supportRecord(${recordId})">Submit</button>
                             </div>
                         </div>
                     </div>
@@ -122,7 +122,7 @@ App = {
                 .then(function(receipt) {
                     App.fetchList();
                 }).catch(function(error) {
-                    $("#modalAlertContent").text("支付失败");
+                    $("#modalAlertContent").text("Transaction failed");
                     $("#modalAlert").modal();
                 });
             } else {
@@ -164,22 +164,22 @@ $(function() {
         var link = $("#ethTalksLink").val();
         var value = $("#ethTalksValue").val();
         if (name.length <= 0) {
-            $("#modalAlertContent").text("请输入文案");
+            $("#modalAlertContent").text("Please input the name");
             $("#modalAlert").modal();
             return;
         }
         if (name.length > 20) {
-            $("#modalAlertContent").text("文案不能超过20个字符");
+            $("#modalAlertContent").text("The name is more than 20 characters");
             $("#modalAlert").modal();
             return;
         }
         if (link.length <= 0) {
-            $("#modalAlertContent").text("请输入链接");
+            $("#modalAlertContent").text("Please input the link");
             $("#modalAlert").modal();
             return;
         }
         if (link.length > 50) {
-            $("#modalAlertContent").text("链接不能超过50个字符");
+            $("#modalAlertContent").text("The link is more than 50 characters");
             $("#modalAlert").modal();
             return;
         }
@@ -191,11 +191,11 @@ $(function() {
                 .then(function(receipt) {
                     App.fetchList();
                 }).catch(function(error) {
-                    $("#modalAlertContent").text("支付失败");
+                    $("#modalAlertContent").text("Transaction failed");
                     $("#modalAlert").modal();
                 });
             } else {
-                $("#modalAlertContent").text("请解锁 MetaMask。");
+                $("#modalAlertContent").text("Your MetaMask is locked!");
                 $("#modalAlert").modal();
             }
             

@@ -224,7 +224,7 @@ $(function() {
     //     $(this).find("#supportTag").hide();
     // });
 
-    $(document).on("click", ".record", function () {
+    $(document).on("touchstart", ".record", function () {
         App.showSupport($(this).data("value"));
     });
 });

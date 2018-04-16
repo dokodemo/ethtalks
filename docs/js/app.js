@@ -29,8 +29,17 @@ App = {
             $("#noWeb3").show();
         }
         web3 = new Web3(App.web3Provider);
-      
-        return App.initContract();
+
+        web3.eth.net.getNetworkType().then(function (network) {
+            console.log(network);
+
+            if (network == "ropsten") {
+                return App.initContract();
+            } else {
+                $("#rankLoading").hide();
+                $("#networkAlert").show ();
+            }
+        });
     },
 
     initContract: function() {

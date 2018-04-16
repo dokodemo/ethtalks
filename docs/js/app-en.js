@@ -99,20 +99,6 @@ App = {
         });
     },
 
-    showSupport: function(recordId) {
-        if (App.canPay) {
-            $(`#support${recordId}`).toggle();
-
-            if (App.lastRecordId != recordId && App.lastRecordId != -1) {
-                $(`#support${App.lastRecordId}`).hide();
-            }
-
-            App.lastRecordId = recordId;
-        } else {
-            $("#modalNoWeb3").modal();
-        }
-    },
-
     supportRecord: function(recordId) {
         var value = $(`#ethTalksValue${recordId}`).val();
         web3.eth.getAccounts().then(function(accounts) {
@@ -216,15 +202,24 @@ $(function() {
         });
     });
 
-    // $(document).on("mouseenter", ".record", function() {            
-    //     $(this).find("#supportTag").show();
-    // });
-    
-    // $(document).on("mouseleave", ".record", function() {
-    //     $(this).find("#supportTag").hide();
-    // });
+    $(document).on("mouseenter", ".record", function () {
+        if (App.canPay) {
+            let recordId = $(this).data("value");
+            $(`#support${recordId}`).show();
 
-    $(document).on("touchstart", ".record", function () {
-        App.showSupport($(this).data("value"));
+            if (App.lastRecordId != -1) {
+                $(`#support${App.lastRecordId}`).hide();
+            }
+
+            App.lastRecordId = recordId;
+        }
+    });
+
+    $(document).on("mouseleave", "#rankList", function () {
+        if (App.lastRecordId != -1) {
+            $(`#support${App.lastRecordId}`).hide();
+        }
+
+        App.lastRecordId = -1;
     });
 });

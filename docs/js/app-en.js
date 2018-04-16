@@ -24,7 +24,7 @@ App = {
                 }
             });
         } else {
-            App.web3Provider = new Web3.providers.HttpProvider("https://ropsten.infura.io/bGLfJpFytHXJJOq0Ovdy");
+            App.web3Provider = new Web3.providers.HttpProvider("https://mainnet.infura.io/bGLfJpFytHXJJOq0Ovdy");
 
             $("#noWeb3").show();
         }
@@ -48,7 +48,7 @@ App = {
         var ranking = new web3.eth.Contract(abi, address);
         App.contracts.ranking = ranking;
 
-        var web3Infura = new Web3(new Web3.providers.WebsocketProvider("wss://ropsten.infura.io/ws"));
+        var web3Infura = new Web3(new Web3.providers.WebsocketProvider("wss://mainnet.infura.io/ws"));
         App.contracts.etEvents = new web3Infura.eth.Contract(abi, address);
 
         App.contracts.etEvents.events.CreateEvent({}, function (error, event) {
